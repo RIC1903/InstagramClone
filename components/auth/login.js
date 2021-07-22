@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {View, Button, TextInput, Text} from 'react-native';
 import firebase from 'firebase';
 
-export default class Register extends Component{
+export default class Login extends Component{
     constructor(props){
         super(props);
 
@@ -15,17 +15,9 @@ export default class Register extends Component{
         this.onSignUp = this.onSignUp.bind(this)
     }
     onSignUp(){
-        const { email, password, name} = this.state;
-        firebase.auth().createUserWithEmailAndPassword(email,password)
+        const { email, password } = this.state;
+        firebase.auth().signInWithEmailAndPassword(email,password)
         .then((result) => {
-            
-            firebase.firestore().collection("users")
-            .doc(firebase.auth().currentUser.uid)
-            .set({
-                name,
-                email
-            });
-            
             console.log(result)
         })
         .catch((err)=>{
@@ -35,10 +27,7 @@ export default class Register extends Component{
     render(){
         return(
             <View>
-                <TextInput 
-                    placeholder="Name"
-                    onChangeText = {(name) => this.setState({name})}
-                />
+                
                 <TextInput 
                     placeholder="Email"
                     onChangeText = {(email) => this.setState({email})}
@@ -51,7 +40,7 @@ export default class Register extends Component{
 
                 <Button 
                     onPress={()=> this.onSignUp()}
-                    title = "Sign Up"
+                    title = "Sign In"
                 />
             </View>
         )

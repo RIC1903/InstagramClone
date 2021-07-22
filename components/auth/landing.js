@@ -7,6 +7,10 @@ export default Landing = ({navigation}) =>{
             <Button 
             title="Register"
             onPress={()=> navigation.navigate("register")}/>
+            <Button 
+            title="Log In"
+            onPress={()=> navigation.navigate("login")}/>
         </View>
+        
     );
 }
