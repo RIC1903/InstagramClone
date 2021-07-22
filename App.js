@@ -3,6 +3,7 @@ import {ScrollView,StyleSheet,Text,View} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
+
 import  * as firebase from 'firebase'; 
 import {Provider} from 'react-redux';
 import {createStore,applyMiddleware} from 'redux';
@@ -30,6 +31,7 @@ if(firebase.apps.length===0){
 import Landing from "./components/auth/landing.js";
 import Register from "./components/auth/register.js";
 import Main from "./components/Main.js";
+import Add from './components/Main/add.js';
 
 const  Stack = createStackNavigator();
 
@@ -81,7 +83,13 @@ export class App extends Component {
     }
     return(
       <Provider store={store}>
-      <Main />
+        <NavigationContainer>
+          <Stack.Navigator intialRouteName="main">
+            <Stack.Screen name="main" component={Main} options={{headerShown:false}}/>
+            <Stack.Screen name="add" component={Add} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      
       </Provider>
     );
   }
