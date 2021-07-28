@@ -11,7 +11,7 @@ export default class Add extends Component {
     this.state = {
       cameraType: 'back',
       mirrorMode: false,
-      imageUri: null
+      imageUri: null,
     };
   }
   render() {
@@ -48,6 +48,9 @@ export default class Add extends Component {
         <TouchableOpacity onPress={this.changeCamera.bind(this)} style={styles.capture}>
           <Text style={{ fontSize: 14 }}> SWAP </Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.capture} onPress={() => this.chooseFile('photo')}>
+          <Text style={styles.textStyle}>Choose Image</Text>
+        </TouchableOpacity>
         </View>
         {this.state.imageUri && <Image source={{uri:this.state.imageUri}} style={{flex:1}}/>}
         
@@ -75,6 +78,41 @@ export default class Add extends Component {
       })
       console.log(data.uri);
     }
+  };
+  chooseFile = async (type) => {
+    let options = {
+      mediaType: type,
+      maxWidth: 300,
+      maxHeight: 550,
+      quality: 1,
+    };
+    launchImageLibrary(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        alert('Image not picked');
+        return;
+      } else if (response.errorCode == 'camera_unavailable') {
+        alert('Camera not available on device');
+        return;
+      } else if (response.errorCode == 'permission') {
+        alert('Permission not satisfied');
+        return;
+      } else if (response.errorCode == 'others') {
+        alert(response.errorMessage);
+        return;
+      }
+      console.log('base64 -> ', response.assets[0].base64);
+      console.log('uri -> ', response.assets[0].uri);
+      console.log('width -> ', response.assets[0].width);
+      console.log('height -> ', response.assets[0].height);
+      console.log('fileSize -> ', response.assets[0].fileSize);
+      console.log('type -> ', response.assets[0].type);
+      console.log('fileName -> ', response.assets[0].fileName);
+      this.setState({
+        imageUri:response.assets[0].uri
+      })
+    });
   };
 }
 
