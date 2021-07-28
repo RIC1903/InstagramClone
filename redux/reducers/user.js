@@ -1,6 +1,7 @@
-import {USER_STATE_CHANGE} from "../constants/index.js";
+import {USER_STATE_CHANGE,USER_POSTS_STATE_CHANGE} from "../constants/index.js";
 const initialState = {
-    currentUser: null
+    currentUser: null,
+    posts: []
 }
 
 export const user = (state=initialState,action) => {
@@ -12,8 +13,13 @@ export const user = (state=initialState,action) => {
                 ...state,
                 currentUser: action.currentUser
             }
-    default:
-        
-        return state;
+        case USER_POSTS_STATE_CHANGE:
+            return{
+                ...state,
+                posts: action.posts
+            }
+        default:
+            
+            return state;
     }
 }

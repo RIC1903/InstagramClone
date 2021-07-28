@@ -58,7 +58,7 @@ export  class Save extends Component{
             firebase.firestore()
             .collection('posts')
             .doc(firebase.auth().currentUser.uid)
-            .collection("userPosts")
+            .collection('userPosts')
             .add({
                 downloadURL,
                 caption: this.state.caption,
