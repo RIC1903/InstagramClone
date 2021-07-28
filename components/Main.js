@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {View,Text} from 'react-native';
+// import {View,Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';

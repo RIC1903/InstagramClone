@@ -51,6 +51,9 @@ export default class Add extends Component {
         <TouchableOpacity style={styles.capture} onPress={() => this.chooseFile('photo')}>
           <Text style={styles.textStyle}>Choose Image</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={()=> this.props.navigation.navigate('save',{image:this.state.imageUri})} style={styles.capture}>
+          <Text style={{ fontSize: 14 }}> Save </Text>
+        </TouchableOpacity>
         </View>
         {this.state.imageUri && <Image source={{uri:this.state.imageUri}} style={{flex:1}}/>}
         
