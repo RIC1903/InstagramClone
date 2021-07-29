@@ -16,30 +16,6 @@ class Feed extends Component{
         }
     }
     
-    // componentDidMount() {
-    //     let posts = []
-    //     console.log("Here boi");
-    //     console.log(this.props.usersLoaded,this.props.following.length)
-    //     if(this.props.usersLoaded == this.props.following.length){
-    //         console.log("updating posts")
-    //         for (let i=0;i<this.props.following.length;i++){
-    //             const user = this.props.users.find(el => el.uid === this.props.following[i]);
-    //             if(user != undefined){
-    //                 posts= [...posts, ...user.posts];
-    //             }
-    //         }
-    //         posts.sort((x,y) => {
-    //             return x.creation - y.creation;
-    //         })
-
-    //         this.setState({
-    //             posts:posts,
-    //             usersLoaded: this.props.usersLoaded
-    //         })
-    //     }
- 
-        
-    // }
     componentDidUpdate(){
         console.log("Heheh",this.props.usersLoaded, this.state.usersLoaded)
         if(this.props.usersLoaded !== this.state.usersLoaded){
@@ -83,6 +59,13 @@ class Feed extends Component{
                             style={styles.image}
                             source={{uri: item.downloadURL}}
                         />
+                        <Text
+                            onPress={() => this.props.navigation.navigate('comment',
+                                {postId: item.id, uid:item.user.uid}
+                            )}>
+                                View Comments.
+                            </Text>
+                        
                         </View>
                     )}
                 />
