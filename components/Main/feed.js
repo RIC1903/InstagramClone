@@ -17,13 +17,13 @@ class Feed extends Component{
     }
     
     componentDidUpdate(){
-        console.log("Heheh",this.props.usersLoaded, this.state.usersLoaded)
-        if(this.props.usersLoaded !== this.state.usersLoaded){
+        console.log("Heheh",this.props.usersFollowingLoaded, this.state.usersLoaded)
+        if(this.props.usersFollowingLoaded !== this.state.usersLoaded){
             console.log("Called");
             let posts = []
             console.log("Here boi");
-            console.log(this.props.usersLoaded,this.props.following.length)
-            if(this.props.usersLoaded == this.props.following.length){
+            console.log(this.props.usersFollowingLoaded,this.props.following.length)
+            if(this.props.usersFollowingLoaded == this.props.following.length){
                 console.log("updating posts")
                 for (let i=0;i<this.props.following.length;i++){
                     const user = this.props.users.find(el => el.uid === this.props.following[i]);
@@ -37,7 +37,7 @@ class Feed extends Component{
     
                 this.setState({
                     posts:posts,
-                    usersLoaded: this.props.usersLoaded
+                    usersLoaded: this.props.usersFollowingLoaded
                 })
             }
         }
@@ -102,7 +102,7 @@ const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser,
     following: store.userState.following,
     users: store.usersState.users,
-    usersLoaded: store.usersState.usersLoaded,
+    usersFollowingLoaded: store.usersState.usersFollowingLoaded,
 })
 
 export default connect(mapStateToProps,null)(Feed);
