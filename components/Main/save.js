@@ -70,6 +70,8 @@ export  class Save extends Component{
             
             <Image source={{uri:this.props.route.params.image}} style={{flex:1}}/>
             <TextInput 
+				style={{color:'black'}}
+				placeholderTextColor="#000"
                 placeholder="Write a Caption"
                 onChangeText = {(caption) => {
                     this.setState({

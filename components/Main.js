@@ -12,6 +12,7 @@ import {fetchUser,fetchUserPosts} from '../redux/actions/index.js';
 
 import Feed from './Main/feed.js';
 import Profile from './Main/profile';
+import Search from './Main/search';
 
 const EmptyScreen =()=>{
     return(null);
@@ -30,6 +31,12 @@ export class Main extends Component{
                 options={{
                     tabBarIcon: ({color,size}) => (
                         <MaterialCommunityIcons name="home" color={color} size={26}/>
+                    )
+                }}/>
+                <Tab.Screen name="search" component={Search}
+                options={{
+                    tabBarIcon: ({color,size}) => (
+                        <MaterialCommunityIcons name="magnify" color={color} size={26}/>
                     )
                 }}/>
                 <Tab.Screen name="addcontainer" component={EmptyScreen}

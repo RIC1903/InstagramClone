@@ -36,14 +36,20 @@ export default class Register extends Component{
         return(
             <View>
                 <TextInput 
+				style={{color:'black'}}
+				placeholderTextColor="#000"
                     placeholder="Name"
                     onChangeText = {(name) => this.setState({name})}
                 />
                 <TextInput 
+				style={{color:'black'}}
+				placeholderTextColor="#000"
                     placeholder="Email"
                     onChangeText = {(email) => this.setState({email})}
                 />
                 <TextInput 
+				style={{color:'black'}}
+				placeholderTextColor="#000"
                     placeholder="Password"
                     secureTextEntry={true}
                     onChangeText = {(password) => this.setState({password})}

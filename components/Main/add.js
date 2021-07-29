@@ -74,7 +74,7 @@ export default class Add extends Component {
   }
   takePicture = async () => {
     if (this.camera) {
-      const options = { quality: 0.5, base64: true };
+      const options = { quality: 1, base64: true };
       const data = await this.camera.takePictureAsync(options);
       this.setState({
         imageUri:data.uri
@@ -85,8 +85,6 @@ export default class Add extends Component {
   chooseFile = async (type) => {
     let options = {
       mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
       quality: 1,
     };
     launchImageLibrary(options, (response) => {
