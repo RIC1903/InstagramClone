@@ -1,4 +1,4 @@
-import {USER_STATE_CHANGE,USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE} from "../constants/index.js";
+import {USER_STATE_CHANGE,USER_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE,CLEAR_DATA} from "../constants/index.js";
 const initialState = {
     currentUser: null,
     posts: [],
@@ -23,6 +23,11 @@ export const user = (state=initialState,action) => {
             return{
                 ...state,
                 following: action.following
+            }
+        case CLEAR_DATA:
+            return{
+                ...state,
+                initialState
             }
         default:
             

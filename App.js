@@ -30,6 +30,7 @@ if(firebase.apps.length===0){
 
 import Landing from "./components/auth/landing.js";
 import Register from "./components/auth/register.js";
+import Login from "./components/auth/login";
 import Main from "./components/Main.js";
 import Add from './components/Main/add.js';
 import Save from './components/Main/save.js';
@@ -78,6 +79,7 @@ export class App extends Component {
           <Stack.Navigator initialRouteName="landing">
             <Stack.Screen name="landing" component={Landing} options={{headerShown:false}}/>
             <Stack.Screen name="register" component={Register}/>
+            <Stack.Screen name="login" component={Login}/>
           </Stack.Navigator>
         </NavigationContainer>  
       );

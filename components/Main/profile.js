@@ -113,6 +113,11 @@ class Profile extends Component{
             .doc(this.state.userId)
             .delete()
         }
+
+        const onLogout = () => {
+            firebase.auth().signOut();
+        }
+
         if(this.state.user === null){
             return(
                 <View></View>
@@ -138,7 +143,12 @@ class Profile extends Component{
                             />
                         )}
                     </View>
-                ):null}
+                ):
+                (<Button
+                    title='logout'
+                    onPress={() => onLogout()}
+                />)
+                }
             </View>
             <View style={styles.galleryContainer}>
                 <FlatList 
