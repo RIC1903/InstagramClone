@@ -7,7 +7,7 @@ const Tab=createMaterialBottomTabNavigator();
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {fetchUser,fetchUserPosts} from '../redux/actions/index.js';
+import {fetchUser,fetchUserPosts,fetchUserFollowing} from '../redux/actions/index.js';
 
 
 import Feed from './Main/feed.js';
@@ -22,6 +22,7 @@ export class Main extends Component{
     componentDidMount(){
         this.props.fetchUser();
         this.props.fetchUserPosts();
+        this.props.fetchUserFollowing();
     }
     render(){
        
@@ -72,6 +73,6 @@ export class Main extends Component{
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser
 })
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser,fetchUserPosts},dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser,fetchUserPosts,fetchUserFollowing},dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
