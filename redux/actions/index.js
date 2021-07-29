@@ -2,7 +2,6 @@ import {USER_STATE_CHANGE,USET_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE,U
 import firebase from 'firebase';
 
 
-
 export function fetchUser() {
     return ((dispatch) => {
         firebase.firestore()
@@ -67,7 +66,7 @@ export function fetchUserFollowing() {
 export function fetchUsersData(uid){
     return ((dispatch, getState) => {
         const found = getState().usersState.users.some(el => el.uid === uid);
-
+        console.log(found)
         if(!found){
             firebase.firestore()
             .collection("users")
@@ -78,7 +77,8 @@ export function fetchUsersData(uid){
                     let user = snapshot.data();
                     user.uid=snapshot.id;
                     dispatch({ type: 'USERS_DATA_STATE_CHANGE', user})
-                    dispatch(fetchUsersFollowingPosts(user.id))
+                    dispatch(fetchUsersFollowingPosts(user.uid))
+                    console.log(user)
                 }
                 else {
                     console.log('does not exist')
@@ -89,6 +89,7 @@ export function fetchUsersData(uid){
 }
 
 export function fetchUsersFollowingPosts(uid) {
+    const userId=uid;
     return ((dispatch,getState) => {
         firebase.firestore()
             .collection("posts")
@@ -97,17 +98,19 @@ export function fetchUsersFollowingPosts(uid) {
             .orderBy("creation", "asc")
             .get()
             .then((snapshot) => {
-                
-                console.log(snapshot)
-                console.log({snapshot,uid});
-
+                console.log("The uid is", uid)
+                console.log("Snapshot is \n",snapshot)
+                // console.log({snapshot,uid});
+                // const uid = snapshot.query.EP.path.segments[1];
+                const uid=userId;
                 const user = getState().usersState.users.find(el => el.uid === uid);
                 let posts = snapshot.docs.map(doc => {
                     const data = doc.data();
                     const id = doc.id;
                     return { id, ...data,user }
                 })
-                console.log(posts)
+                console.log("Yo yo")
+                console.log(posts.user)
                 dispatch({ type: 'USERS_POSTS_STATE_CHANGE', posts,uid })
                 console.log(getState())
             })
