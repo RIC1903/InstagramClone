@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 // import {View,Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import firebase from 'firebase';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 const Tab=createMaterialBottomTabNavigator();
 
@@ -52,6 +52,12 @@ export class Main extends Component{
                     )
                 }}/>
                 <Tab.Screen name="profile" component={Profile}
+                listeners={({ navigation}) => ({
+                    tabPress: event => {
+                        event.preventDefault();
+                        navigation.navigate("profile",{uid: firebase.auth().currentUser.uid})
+                    }
+                })}
                 options={{
                     tabBarIcon: ({color,size}) => (
                         <MaterialCommunityIcons name="account-circle" color={color} size={26}/>

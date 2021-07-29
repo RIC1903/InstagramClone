@@ -1,29 +1,148 @@
 import React,{Component} from 'react';
 import {View,Text, Image, FlatList, StyleSheet} from 'react-native';
 
+import firebase from 'firebase';
+require('firebase/firestore');
 import {connect} from 'react-redux';
+import { user } from '../../redux/reducers/user';
 
 class Profile extends Component{
     
     constructor(props){
         super(props)
+        this.state = {
+            userPosts: [],
+            user:null,
+            userId: null
 
+        }
     }
-    render(){
+    
+    componentDidMount() {
+        this.setState({
+            userId:this.props.route.params.uid
+        })
+        console.log(this.props.userId,this.props.route.params.uid)
         const posts = this.props.posts;
-        
         const currentUser = this.props.currentUser;
+        if(this.props.route.params.uid === firebase.auth().currentUser.uid){
+            console.log("Not same user");
+            this.setState({
+                user: currentUser,
+                userPosts: posts
+                
+            })
+        }
+        else{
+            console.log("Here");
+            firebase.firestore()
+            .collection("users")
+            .doc(this.props.route.params.uid)
+            .get()
+            .then((snapshot) => {
+                if (snapshot.exists) {
+                    this.setState({
+                        user:snapshot.data()
+                    })
+                }
+                else {
+                    console.log('does not exist')
+                }
+            })
+
+            firebase.firestore()
+            .collection("posts")
+            .doc(this.props.route.params.uid)
+            .collection("userPosts")
+            .orderBy("creation", "asc")
+            .get()
+            .then((snapshot) => {
+                
+                let posts = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    return { id, ...data }
+                })
+                // console.log(posts)
+                this.setState({
+                    userPosts:posts
+                })
+            })
+
+        }
+    }
+    componentDidUpdate(){
+        console.log(this.props.route.params.uid,this.state.userId);
+        if(this.props.route.params.uid != this.state.userId && this.state.userId!=null){
+            this.setState({
+                userId:this.props.route.params.uid
+            })
+        const posts = this.props.posts;
+        const currentUser = this.props.currentUser;
+        if(this.props.route.params.uid === firebase.auth().currentUser.uid){
+            console.log("Not same user");
+            this.setState({
+                user: currentUser,
+                userPosts: posts
+            })
+        }
+        else{
+            console.log("Here");
+            firebase.firestore()
+            .collection("users")
+            .doc(this.props.route.params.uid)
+            .get()
+            .then((snapshot) => {
+                if (snapshot.exists) {
+                    this.setState({
+                        user:snapshot.data()
+                    })
+                }
+                else {
+                    console.log('does not exist')
+                }
+            })
+
+            firebase.firestore()
+            .collection("posts")
+            .doc(this.props.route.params.uid)
+            .collection("userPosts")
+            .orderBy("creation", "asc")
+            .get()
+            .then((snapshot) => {
+                
+                let posts = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    return { id, ...data }
+                })
+                // console.log(posts)
+                this.setState({
+                    userPosts:posts
+                })
+            })
+
+        }
+        }
+    }
+    
+    render(){
+        if(this.state.user === null){
+            return(
+                <View></View>
+            );
+        } 
     return(
         <View style={styles.container}>
             <View style={styles.infoContainer}>
-                <Text>{currentUser.name}</Text>
-                <Text>{currentUser.email}</Text>
+                <Text>{this.state.user.name}</Text>
+                <Text>{this.state.user.email}</Text>
             </View>
             <View style={styles.galleryContainer}>
                 <FlatList 
                     numColumns={3}
                     horizontal={false}
-                    data={posts}
+                    data={this.state.userPosts}
                     renderItem={({item}) => (
                         <View style={styles.imageContainer}>
                         <Image 
