@@ -1,4 +1,4 @@
-import {USER_STATE_CHANGE,USET_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE,USERS_DATA_STATE_CHANGE,CLEAR_DATA} from '../constants';
+import {USER_STATE_CHANGE,USET_POSTS_STATE_CHANGE, USER_FOLLOWING_STATE_CHANGE,USERS_DATA_STATE_CHANGE,CLEAR_DATA,USERS_LIKES_STATE_CHANGE} from '../constants';
 import firebase from 'firebase';
 
 export function clearData(){
@@ -117,9 +117,35 @@ export function fetchUsersFollowingPosts(uid) {
                 })
                 console.log("Yo yo")
                 console.log(posts.user)
+                for(let i=0;i<posts.length;i++){
+                    dispatch(fetchUsersFollowingLikes(uid,posts[i].id));
+                }
                 dispatch({ type: 'USERS_POSTS_STATE_CHANGE', posts,uid })
                 console.log(getState())
             })
     })
 }
 
+export function fetchUsersFollowingLikes(uid, postId) {
+    const userId=postId;
+    return ((dispatch,getState) => {
+        firebase.firestore()
+            .collection("posts")
+            .doc(uid)
+            .collection("userPosts")
+            .doc("postId")
+            .collection("likes")
+            .doc(firebase.auth().currentUser.uid)
+            .onSnapshot((snapshot) => {
+               
+                const postId=userId;
+                let currentUserLike = false;
+                if(snapshot.exists){
+                    currentUserLike = true;
+                }
+                
+                dispatch({ type: 'USERS_LIKES_STATE_CHANGE', postId,currentUserLike})
+                
+            })
+    })
+}

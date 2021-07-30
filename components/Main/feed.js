@@ -18,28 +18,21 @@ class Feed extends Component{
     
     componentDidUpdate(){
         console.log("Heheh",this.props.usersFollowingLoaded, this.state.usersLoaded)
-        if(this.props.usersFollowingLoaded !== this.state.usersLoaded){
-            console.log("Called");
-            let posts = []
-            console.log("Here boi");
+        if(this.props.usersFollowingLoaded !== this.state.usersLoaded || this.props.feed!=this.state.posts){
+            
             console.log(this.props.usersFollowingLoaded,this.props.following.length)
-            if(this.props.usersFollowingLoaded == this.props.following.length){
+            if(this.props.usersFollowingLoaded == this.props.following.length && this.props.following.length!==0){
                 console.log("updating posts")
-                for (let i=0;i<this.props.following.length;i++){
-                    const user = this.props.users.find(el => el.uid === this.props.following[i]);
-                    if(user != undefined){
-                        posts= [...posts, ...user.posts];
-                    }
-                }
-                posts.sort((x,y) => {
+                
+                this.props.feed.sort((x,y) => {
                     return x.creation - y.creation;
                 })
-    
                 this.setState({
-                    posts:posts,
+                    posts:this.props.feed,
                     usersLoaded: this.props.usersFollowingLoaded
                 })
             }
+            console.log(this.state.posts)
         }
     }
     
@@ -101,7 +94,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (store) => ({
     currentUser: store.userState.currentUser,
     following: store.userState.following,
-    users: store.usersState.users,
+    feed: store.usersState.feed,
     usersFollowingLoaded: store.usersState.usersFollowingLoaded,
 })
 
