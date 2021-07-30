@@ -28,22 +28,7 @@ class Feed extends Component{
                 posts:this.props.feed,
                 usersLoaded: this.props.usersFollowingLoaded
             })
-            // for(let i=0;i<this.state.posts.length;i++){
-            //     //updating likes
-            //     firebase.firestore()
-            //    .collection("posts")
-            //    .doc(this.state.posts[i].user.uid)
-            //    .collection("userPosts")
-            //    .doc(this.state.posts[i].id)
-            //    .collection("likes")
-            //    .get()
-            //    .then((snapshot) => {
-                    
-            //             this.state.posts[i].likes=snapshot.docs.length
-    
-            //    })
-            //     console.log(this.state.posts)
-            // }
+
         }
     }
     componentDidUpdate(){
@@ -64,31 +49,7 @@ class Feed extends Component{
                     usersLoaded: this.props.usersFollowingLoaded
                 })
                 console.log("updating posts", this.props.feed[0])
-                // for(let i=0;i<this.state.posts.length;i++){
-
-                //     //updating likes
-                //     let x = this.state.posts;
-                //     firebase.firestore()
-                //    .collection("posts")
-                //    .doc(this.state.posts[i].user.uid)
-                //    .collection("userPosts")
-                //    .doc(this.state.posts[i].id)
-                //    .collection("likes")
-                //    .get()
-                //    .then((snapshot) => {
-
-                //             x[i].likes=snapshot.docs.length
-        
-                //    })
-                //    this.setState({
-                //        posts: x
-                //    })
-                //     console.log(this.state.posts)
-                // }
-            }
-
-            
-            
+            }   
         }
         
     }
