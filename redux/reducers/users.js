@@ -24,7 +24,7 @@ export const users = (state=initialState,action) => {
             return{
                 ...state,
                 feed: state.feed.map(post => post.id == action.postId ? 
-                    {...post,currentUserLike: action.currentUserLike} : 
+                    {...post,currentUserLike: action.currentUserLike,likes: action.likes} : 
                     post)
         }
         case CLEAR_DATA:

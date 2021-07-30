@@ -12,17 +12,49 @@ class Feed extends Component{
         super(props)
         this.state = {
             posts: [],
-            usersLoaded: 0
+            usersLoaded: 0,
+            uid: null
         }
     }
+    componentDidMount(){
+        
+        if(this.props.usersFollowingLoaded == this.props.following.length && this.props.following.length!==0){
+            console.log("updating posts")
+            
+            this.props.feed.sort((x,y) => {
+                return x.creation - y.creation;
+            })
+            this.setState({
+                posts:this.props.feed,
+                usersLoaded: this.props.usersFollowingLoaded
+            })
+            // for(let i=0;i<this.state.posts.length;i++){
+            //     //updating likes
+            //     firebase.firestore()
+            //    .collection("posts")
+            //    .doc(this.state.posts[i].user.uid)
+            //    .collection("userPosts")
+            //    .doc(this.state.posts[i].id)
+            //    .collection("likes")
+            //    .get()
+            //    .then((snapshot) => {
+                    
+            //             this.state.posts[i].likes=snapshot.docs.length
     
+            //    })
+            //     console.log(this.state.posts)
+            // }
+        }
+    }
     componentDidUpdate(){
+        
         console.log("Heheh",this.props.usersFollowingLoaded, this.state.usersLoaded)
-        if(this.props.usersFollowingLoaded !== this.state.usersLoaded || this.props.feed!=this.state.posts){
+        
+        if(this.props.usersFollowingLoaded !== this.state.usersLoaded || this.props.feed!=this.state.posts ){
             
             console.log(this.props.usersFollowingLoaded,this.props.following.length)
             if(this.props.usersFollowingLoaded == this.props.following.length && this.props.following.length!==0){
-                console.log("updating posts")
+                
                 
                 this.props.feed.sort((x,y) => {
                     return x.creation - y.creation;
@@ -31,14 +63,67 @@ class Feed extends Component{
                     posts:this.props.feed,
                     usersLoaded: this.props.usersFollowingLoaded
                 })
+                console.log("updating posts", this.props.feed[0])
+                // for(let i=0;i<this.state.posts.length;i++){
+
+                //     //updating likes
+                //     let x = this.state.posts;
+                //     firebase.firestore()
+                //    .collection("posts")
+                //    .doc(this.state.posts[i].user.uid)
+                //    .collection("userPosts")
+                //    .doc(this.state.posts[i].id)
+                //    .collection("likes")
+                //    .get()
+                //    .then((snapshot) => {
+
+                //             x[i].likes=snapshot.docs.length
+        
+                //    })
+                //    this.setState({
+                //        posts: x
+                //    })
+                //     console.log(this.state.posts)
+                // }
             }
-            console.log(this.state.posts)
+
+            
+            
         }
+        
     }
     
     render(){
 
+ 
+    const onLikePress = (userId,postId) => {
         
+        firebase.firestore()
+        .collection("posts")
+        .doc(userId)
+        .collection("userPosts")
+        .doc(postId)
+        .collection("likes")
+        .doc(firebase.auth().currentUser.uid)
+        .set({})
+
+        this.componentDidUpdate()
+    }
+    const onDislikePress = (userId,postId) => {
+        firebase.firestore()
+        .collection("posts")
+        .doc(userId)
+        .collection("userPosts")
+        .doc(postId)
+        .collection("likes")
+        .doc(firebase.auth().currentUser.uid)
+        .delete()
+
+        this.componentDidUpdate()
+    }
+
+    
+    
     return(
             <View style={styles.galleryContainer}>
                 <FlatList 
@@ -52,12 +137,25 @@ class Feed extends Component{
                             style={styles.image}
                             source={{uri: item.downloadURL}}
                         />
+                        {item.currentUserLike ? (
+                            <Button 
+                                title="Dislike"
+                                onPress={()=>onDislikePress(item.user.uid,item.id,item)}
+                            />
+                        ) : (
+                            <Button 
+                                title="Like"
+                                onPress={()=>onLikePress(item.user.uid,item.id)}
+                            />
+                        )}
+                        <Text>{item.likes} likes</Text>
+                         
                         <Text
                             onPress={() => this.props.navigation.navigate('comment',
                                 {postId: item.id, uid:item.user.uid}
                             )}>
                                 View Comments.
-                            </Text>
+                        </Text>
                         
                         </View>
                     )}

@@ -127,25 +127,41 @@ export function fetchUsersFollowingPosts(uid) {
 }
 
 export function fetchUsersFollowingLikes(uid, postId) {
+    
     const userId=postId;
     return ((dispatch,getState) => {
         firebase.firestore()
             .collection("posts")
             .doc(uid)
             .collection("userPosts")
-            .doc("postId")
+            .doc(postId)
             .collection("likes")
             .doc(firebase.auth().currentUser.uid)
             .onSnapshot((snapshot) => {
-               
+                
                 const postId=userId;
                 let currentUserLike = false;
                 if(snapshot.exists){
+                    
                     currentUserLike = true;
                 }
+                firebase.firestore()
+                .collection("posts")
+                .doc(uid)
+                .collection("userPosts")
+                .doc(postId)
+                .collection("likes")
+                .get()
+                .then((snapshot) => {
+                    
+                    let likes=snapshot.docs.length
+                    console.log(snapshot.docs.legnth)
+                    dispatch({ type: 'USERS_LIKES_STATE_CHANGE', postId,currentUserLike, likes})
+                    
+                })
                 
-                dispatch({ type: 'USERS_LIKES_STATE_CHANGE', postId,currentUserLike})
                 
             })
+            
     })
 }
