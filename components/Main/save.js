@@ -11,7 +11,7 @@ export  class Save extends Component{
         console.log(this.props);
         this.state ={
             caption: null,
-            
+            uploading: false
         };
     }
      
@@ -26,6 +26,9 @@ export  class Save extends Component{
         console.log("Caption");
         console.log(this.state.caption);
         uploadImage = async () => {
+            this.setState({
+                uploading: true,
+            })
             const uri=this.props.route.params.image;
             
             const response = await fetch(uri);
@@ -55,6 +58,7 @@ export  class Save extends Component{
 
         const savePostData = (downloadURL) => {
             captionName = this.state.caption
+            
             firebase.firestore()
             .collection('posts')
             .doc(firebase.auth().currentUser.uid)
@@ -69,6 +73,9 @@ export  class Save extends Component{
         <View style={{flex:1}}>
             
             <Image source={{uri:this.props.route.params.image}} style={{flex:1}}/>
+            {this.state.uploading ? (<Text style={{color:'black',fontSize:24}}>
+                Uploading image. Please wait ...
+            </Text>) : (
             <TextInput 
 				style={{color:'black'}}
 				placeholderTextColor="#000"
@@ -78,7 +85,7 @@ export  class Save extends Component{
                         caption: caption
                     })
                 }}
-            />
+            />)}
             <Button title="Save Post" onPress={() => uploadImage()}/>
         </View>
     );

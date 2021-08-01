@@ -13,14 +13,14 @@ import thunk from 'redux-thunk';
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCPiN1SXB_sTT7maAQJZM91YojJnCU3eng",
-  authDomain: "inspired-nomad-255711.firebaseapp.com",
-  databaseURL: "https://inspired-nomad-255711.firebaseio.com",
-  projectId: "inspired-nomad-255711",
-  storageBucket: "inspired-nomad-255711.appspot.com",
-  messagingSenderId: "1046290535882",
-  appId: "1:1046290535882:web:165845ee235c804b63eb33",
-  measurementId: "G-7NZQS6KNZT"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN_NAME",
+  databaseURL: "YOUR_DB_URL",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "from your firebase console",
+  appId: "YOUR_APP_ID",
+  measurementId: "from your firebase console"
 };
 
 if(firebase.apps.length===0){
